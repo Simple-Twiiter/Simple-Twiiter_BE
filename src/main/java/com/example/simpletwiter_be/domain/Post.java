@@ -2,6 +2,7 @@ package com.example.simpletwiter_be.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Post extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,5 +23,8 @@ public class Post extends Timestamped{
     private String contents;
     private String imgUrl;
     @Column(nullable = false)
-    private boolean activate=true;
+    private boolean activate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 }

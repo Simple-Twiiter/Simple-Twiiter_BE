@@ -2,6 +2,7 @@ package com.example.simpletwiter_be.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Member extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
