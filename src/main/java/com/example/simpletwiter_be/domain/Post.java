@@ -27,4 +27,14 @@ public class Post extends Timestamped{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public void disable(){
+        this.activate = false;
+    }
+
+    public void update(String title, String contents, String imgUrl){
+        this.title = title;
+        this.contents = contents;
+        this.imgUrl = imgUrl;
+    }
 }
