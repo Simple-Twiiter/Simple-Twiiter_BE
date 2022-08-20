@@ -10,26 +10,16 @@ public class ResponseDto<T> {
     private final T data;
     private final String message;
 
-    public ResponseDto<?> success(T data){
-        return ResponseDto.builder()
-                .result(true)
-                .data(data)
-                .build();
+    public static <T> ResponseDto<T> success(T data){
+        return new ResponseDto<>(true, data, null);
     }
 
-    public ResponseDto<?> success(T data, String message){
-        return ResponseDto.builder()
-                .result(true)
-                .data(data)
-                .message(message)
-                .build();
+    public static <T> ResponseDto<T> success(T data, String message){
+        return new ResponseDto<>(true, data, message);
     }
 
-    public ResponseDto<?> fail(String message){
-        return ResponseDto.builder()
-                .result(false)
-                .message(message)
-                .build();
+    public static <T> ResponseDto<T> fail(String message){
+        return new ResponseDto<>(false, null, message);
     }
 
 }
