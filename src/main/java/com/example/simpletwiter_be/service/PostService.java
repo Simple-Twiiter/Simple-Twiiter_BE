@@ -35,8 +35,8 @@ public class PostService {
                         .title(returnPost.getTitle())
                         .imgUrl(returnPost.getImgUrl())
                         .id(returnPost.getId())
-                        .createdAt(returnPost.getCreatedAt())
-                        .modifiedAt(returnPost.getModifiedAt())
+                        .createdAt(returnPost.getCreatedAt().toLocalDate())
+                        .modifiedAt(returnPost.getModifiedAt().toLocalDate())
                         .isMine(true)
                         .username(returnPost.getMember().getUsername())
                 .build());
@@ -52,8 +52,8 @@ public class PostService {
                 .title(post.getTitle())
                 .imgUrl(post.getImgUrl())
                 .id(post.getId())
-                .createdAt(post.getCreatedAt())
-                .modifiedAt(post.getModifiedAt())
+                .createdAt(post.getCreatedAt().toLocalDate())
+                .modifiedAt(post.getModifiedAt().toLocalDate())
                 .isMine(post.getMember().equals(member))
                 .username(post.getMember().getUsername())
                 .build();
@@ -72,8 +72,8 @@ public class PostService {
                     .title(post.getTitle())
                     .imgUrl(post.getImgUrl())
                     .id(post.getId())
-                    .createdAt(post.getCreatedAt())
-                    .modifiedAt(post.getModifiedAt())
+                    .createdAt(post.getCreatedAt().toLocalDate())
+                    .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
                     .username(post.getMember().getUsername())
                     .build());
@@ -105,8 +105,8 @@ public class PostService {
                     .title(post.getTitle())
                     .imgUrl(post.getImgUrl())
                     .id(post.getId())
-                    .createdAt(post.getCreatedAt())
-                    .modifiedAt(post.getModifiedAt())
+                    .createdAt(post.getCreatedAt().toLocalDate())
+                    .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
                     .username(post.getMember().getUsername())
                     .build());

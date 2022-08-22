@@ -3,6 +3,7 @@ package com.example.simpletwiter_be.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,6 +15,6 @@ public class PostResponseDto {
     private final String contents;
     private final String imgUrl;
     private final boolean isMine;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime modifiedAt;
+    private final LocalDate createdAt;
+    private final LocalDate modifiedAt;
 }

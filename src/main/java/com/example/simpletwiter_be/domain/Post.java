@@ -23,9 +23,9 @@ public class Post extends Timestamped{
     private String contents;
     private String imgUrl;
     @Column(nullable = false)
-    private boolean activate;
+    private Boolean activate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false,updatable = false)
     private Member member;
 
     public void disable(){
