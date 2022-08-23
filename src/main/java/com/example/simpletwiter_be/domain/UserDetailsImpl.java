@@ -1,5 +1,6 @@
 package com.example.simpletwiter_be.domain;
 
+
 import com.example.simpletwiter_be.shared.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,5 +55,4 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

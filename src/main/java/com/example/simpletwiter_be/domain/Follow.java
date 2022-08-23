@@ -1,19 +1,38 @@
 package com.example.simpletwiter_be.domain;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @Entity
-@Embeddable
-public class Follow {
+
+public class Follow extends Timestamped{
+    @EmbeddedId
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private FollowId id;
+
+    @Builder
+    public Follow(Member member){
+        this.Memver = member;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member memberid;
+
+    @ManyToOne
+    @JoinColumn(name = "follow_id")
+    private Member followid;
+
+    public Follow(Member memberid, Member followid){
+        this.followid = followid;
+        this.memberid = memberid;
+    }
 
 
 
