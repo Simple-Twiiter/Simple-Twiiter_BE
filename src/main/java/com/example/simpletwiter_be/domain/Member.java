@@ -14,7 +14,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class Member extends Timestamped {
 
     @Id
@@ -23,6 +22,8 @@ public class Member extends Timestamped {
 
     @Column(nullable = false)
     private String username;
+
+    private String userImg;
 
     @Column(nullable = false)
     @JsonIgnore

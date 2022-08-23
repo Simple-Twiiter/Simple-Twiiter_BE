@@ -21,7 +21,6 @@ public class AWSConfig {
 
     @Bean
     public AmazonS3Client amazonS3Client(){
-        System.out.println("아싸라비야");
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(iamAccessKey, iamSecretKey);
         return (AmazonS3Client) AmazonS3ClientBuilder.standard()
                 .withRegion(region)
