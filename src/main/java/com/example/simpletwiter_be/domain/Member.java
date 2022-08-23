@@ -1,11 +1,11 @@
-package com.one.mycodi.domain;
+package com.example.simpletwiter_be.domain;
 
-import com.example.simpletwiter_be.domain.Timestamped;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.Objects;
 
@@ -28,6 +28,9 @@ public class Member extends Timestamped {
     @JsonIgnore
     private String password;
 
+    @Column(nullable = false)
+    private String userImg;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -48,6 +51,5 @@ public class Member extends Timestamped {
     public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
-
 
 }

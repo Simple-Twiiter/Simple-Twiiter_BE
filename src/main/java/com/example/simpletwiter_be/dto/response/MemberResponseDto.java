@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class MemberResponseDto {
     private Long id;
     private String username;
+    private String userImg;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

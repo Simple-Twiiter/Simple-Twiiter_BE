@@ -3,7 +3,6 @@ package com.example.simpletwiter_be.controller;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
 import com.example.simpletwiter_be.service.PostService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

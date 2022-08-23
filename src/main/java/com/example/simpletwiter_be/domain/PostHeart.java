@@ -7,21 +7,27 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class RefreshToken extends Timestamped {
+public class PostHeart {
+
     @Id
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
+    private int postHeart;
+
     @JoinColumn(name = "member_id", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Column(name="token_val", nullable = false)
-    private String value;
+    @JoinColumn(name = "post_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Post post;
 
 }
+
