@@ -299,7 +299,7 @@ class PostServiceTest {
         post.setCreatedAt(LocalDateTime.now());
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.of(post));
-        when(imageUploadService.uploadImage(any(MockMultipartFile.class))).thenReturn("test contents 3");
+        when(imageUploadService.uploadImage(any(MockMultipartFile.class))).thenReturn("test imgUrl 3");
 
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("test title 3")

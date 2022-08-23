@@ -2,8 +2,8 @@ package com.example.simpletwiter_be.service;
 
 import antlr.Token;
 import com.example.simpletwiter_be.domain.Comment;
-import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.domain.Post;
+import com.example.simpletwiter_be.domain.Users;
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
 import com.example.simpletwiter_be.dto.response.CommentResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -43,7 +43,7 @@ public class CommentService {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
-        Member member = validateMember(request);
+        Users member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
@@ -75,7 +75,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<?> getAllCommentsByPost(Long postId, Member member, int page, int pageSize) {
+    public ResponseDto<?> getAllCommentsByPost(Long postId, Users member, int page, int pageSize) {
         Post post = postRepository.findById(postId).orElse(null);
         PageRequest pageRequest = PageRequest.of(page,pageSize);
         if (post == null){
@@ -97,7 +97,7 @@ public class CommentService {
                             .member(userDto)
                             .createdAt(comment.getCreatedAt())
                             .modifiedAt(comment.getModifiedAt())
-                            .isMine(post.getMember().equals(member))
+                            .isMine(post.getUsers().equals(member))
                             .build()
             );
         }
@@ -115,7 +115,7 @@ public class CommentService {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
-        Member member = validateMember(request);
+        Users member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
@@ -144,7 +144,7 @@ public class CommentService {
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .isMine(post.getMember().equals(member))
+                        .isMine(post.getUsers().equals(member))
                         .build()
         );
     }
@@ -159,7 +159,7 @@ public class CommentService {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
-        Member member = validateMember(request);
+        Users member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
@@ -184,7 +184,7 @@ public class CommentService {
     }
 
     @Transactional
-    public Member validateMember(HttpServletRequest request) {
+    public Users validateMember(HttpServletRequest request) {
         if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
             return null;
         }

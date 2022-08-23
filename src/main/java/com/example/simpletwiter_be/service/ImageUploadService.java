@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageUploadService {
     private String S3Bucket = "hanghae-twiiter"; // Bucket 이름
 
+    private AmazonS3Client amazonS3Client;
 
 
     public String uploadImage(MultipartFile multipartFile) throws Exception {
