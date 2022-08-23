@@ -1,5 +1,6 @@
 package com.example.simpletwiter_be.domain;
 
+import com.example.simpletwiter_be.dto.response.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,5 @@ public class Member extends Timestamped{
     private String password;
 
     private String userImg;
-
 
 }

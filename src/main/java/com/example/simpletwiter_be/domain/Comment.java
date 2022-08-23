@@ -1,12 +1,14 @@
 package com.example.simpletwiter_be.domain;
 
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
+import com.example.simpletwiter_be.dto.response.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -15,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Comment extends Timestamped {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +30,16 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+
+
     @JoinColumn(name = "post_id",nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "comment")
-//    private List<CommentLike> commentLikes;
 
     public void update(CommentRequestDto commentRequestDto){this.content = commentRequestDto.getContent();}
 
-
+    public boolean validateMember(Member member) {
+        return !this.member.equals(member);
+    }
 }
