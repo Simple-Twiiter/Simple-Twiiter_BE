@@ -1,8 +1,8 @@
 package com.example.simpletwiter_be.service;
 
-import com.example.simpletwiter_be.domain.UserDetailsImpl;
 import com.example.simpletwiter_be.domain.Member;
-import com.example.simpletwiter_be.repository.UsersRepository;
+import com.example.simpletwiter_be.domain.UserDetailsImpl;
+import com.example.simpletwiter_be.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UsersRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -27,6 +27,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final TokenProvider tokenProvider;
+
     private final PostService postService;
     private PostRepository postRepository;
 
@@ -84,7 +85,7 @@ public class CommentService {
 
         for (Comment comment : commentList) {
 
-            UserDto userDto = new UserDto(member.getUsername(), member.getUserImg());
+            UserDto userDto = new UserDto(member.getUsername(), member.getUserImg(), false);
 
 
             commentResponseDtoList.add(
