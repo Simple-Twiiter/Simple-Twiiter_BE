@@ -1,7 +1,7 @@
 package com.example.simpletwiter_be.repository;
 
 import com.example.simpletwiter_be.domain.Post;
-import com.example.simpletwiter_be.domain.Users;
+import com.example.simpletwiter_be.domain.Member;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +22,17 @@ class PostRepositoryTest {
     @Autowired
     private UsersRepository memberRepository;
 
-    static private Users member1;
-    static private Users member2;
+    static private Member member1;
+    static private Member member2;
 
 
     @BeforeAll
     static void setUp(){
-        member1 = Users.builder()
+        member1 = Member.builder()
                 .username("member1")
                 .password("password1")
                 .build();
-        member2 = Users.builder()
+        member2 = Member.builder()
                 .username("member2")
                 .password("password2")
                 .build();
@@ -40,13 +40,13 @@ class PostRepositoryTest {
 
     @Test
     void save(){
-        Users returnMember = memberRepository.save(member1);
+        Member returnMember = memberRepository.save(member1);
         String title = "post";
         String contents = "post";
         Post post = Post.builder()
                 .contents(contents)
                 .title(title)
-                .users(returnMember)
+                .member(returnMember)
                 .activate(true)
                 .build();
 
@@ -59,8 +59,8 @@ class PostRepositoryTest {
     }
     @Test
     void getAll(){
-        Users[] memberList= {member1, member1, member2, member2, member2};
-        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Member[] memberList= {member1, member1, member2, member2, member2};
+        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -69,7 +69,7 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .users(returnMemberList.get(i))
+                    .member(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);
@@ -97,8 +97,8 @@ class PostRepositoryTest {
 
     @Test
     void getOne(){
-        Users[] memberList= {member1, member1, member2, member2, member2};
-        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Member[] memberList= {member1, member1, member2, member2, member2};
+        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -107,7 +107,7 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .users(returnMemberList.get(i))
+                    .member(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);
@@ -122,8 +122,8 @@ class PostRepositoryTest {
     }
     @Test
     void update(){
-        Users[] memberList= {member1, member1, member2, member2, member2};
-        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Member[] memberList= {member1, member1, member2, member2, member2};
+        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -132,7 +132,7 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .users(returnMemberList.get(i))
+                    .member(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);
