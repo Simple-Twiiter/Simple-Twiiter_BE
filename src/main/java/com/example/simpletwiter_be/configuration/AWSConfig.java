@@ -11,12 +11,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AWSConfig {
-    private @Value("${cloud.aws.credentials.accessKey}") String iamAccessKey;
-    private @Value("${cloud.aws.credentials.secretKey}") String iamSecretKey;
-    private @Value("${cloud.aws.region.static}") String region;
+
+    @Value("${cloud.aws.credentials.accessKey}")
+    private  String iamAccessKey;
+    @Value("${cloud.aws.credentials.secretKey}")
+    private  String iamSecretKey;
+    @Value("${cloud.aws.region.static}")
+    private  String region;
 
     @Bean
     public AmazonS3Client amazonS3Client(){
+        System.out.println("아싸라비야");
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(iamAccessKey, iamSecretKey);
         return (AmazonS3Client) AmazonS3ClientBuilder.standard()
                 .withRegion(region)

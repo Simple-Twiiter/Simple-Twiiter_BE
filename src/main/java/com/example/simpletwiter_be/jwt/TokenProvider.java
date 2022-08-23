@@ -4,6 +4,10 @@ package com.example.simpletwiter_be.jwt;
 import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.domain.RefreshToken;
 import com.example.simpletwiter_be.domain.UserDetailsImpl;
+<<<<<<< HEAD
+=======
+import com.example.simpletwiter_be.domain.Member;
+>>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
 import com.example.simpletwiter_be.dto.request.TokenDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
 import com.example.simpletwiter_be.repository.RefreshTokenRepository;
@@ -85,7 +89,10 @@ public class TokenProvider {
                 .build();
 
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
     public Member getMemberFromAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || AnonymousAuthenticationToken.class.

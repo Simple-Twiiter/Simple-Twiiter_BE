@@ -15,6 +15,7 @@ public class PostResponseDto {
     private final String contents;
     private final String imgUrl;
     private final boolean isMine;
+    private final boolean isLike;
     private final LocalDate createdAt;
     private final LocalDate modifiedAt;
 }

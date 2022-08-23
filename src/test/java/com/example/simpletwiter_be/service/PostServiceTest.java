@@ -1,7 +1,7 @@
 package com.example.simpletwiter_be.service;
 
 import com.example.simpletwiter_be.domain.Post;
-import com.example.simpletwiter_be.domain.Users;
+import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -15,11 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +37,11 @@ class PostServiceTest {
     @Mock
     private PostRepository postRepository;
 
-    private static Users member;
+    private static Member member;
 
     @BeforeAll
     static void setUp(){
-        member = Users.builder()
+        member = Member.builder()
                 .username("test")
                 .password("test")
                 .userImg("")
@@ -66,7 +63,7 @@ class PostServiceTest {
         Post post = Post.builder()
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
-                .users(member)
+                .member(member)
                 .activate(true)
                 .build();
         post.setCreatedAt(LocalDateTime.now());
@@ -97,7 +94,7 @@ class PostServiceTest {
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .build();
         post.setCreatedAt(LocalDateTime.now());
@@ -127,7 +124,7 @@ class PostServiceTest {
             Post post = Post.builder()
                     .contents(contents + i)
                     .title(title + i)
-                    .users(member)
+                    .member(member)
                     .activate(true)
                     .build();
             post.setCreatedAt(LocalDateTime.now());
@@ -160,7 +157,7 @@ class PostServiceTest {
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -191,7 +188,7 @@ class PostServiceTest {
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -214,7 +211,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -239,7 +236,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -260,7 +257,7 @@ class PostServiceTest {
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
 
-        Users otherMember = Users.builder()
+        Member otherMember = Member.builder()
                 .username("otherUser")
                 .build();
 
@@ -268,7 +265,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(otherMember)
+                .member(otherMember)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -292,7 +289,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -329,7 +326,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(member)
+                .member(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -359,7 +356,7 @@ class PostServiceTest {
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
 
-        Users otherMember = Users.builder()
+        Member otherMember = Member.builder()
                 .username("otherUser")
                 .build();
 
@@ -367,7 +364,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .users(otherMember)
+                .member(otherMember)
                 .activate(true)
                 .id(1L)
                 .build();

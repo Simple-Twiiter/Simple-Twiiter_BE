@@ -9,10 +9,12 @@ import lombok.Setter;
 public class UserDto {
     private String username;
     private String userImg;
+    private boolean isFollow;
 
     @Builder
-    public UserDto(String username, String userImg){
+    public UserDto(String username, String userImg, boolean isFollow){
         this.userImg=userImg;
         this.username=username;
+        this.isFollow= isFollow;
     }
 }
