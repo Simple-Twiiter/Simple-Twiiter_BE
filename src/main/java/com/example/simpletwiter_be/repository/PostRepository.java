@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    int countByActivateIsTrueAndUsers(Member member);
+    int countByActivateIsTrueAndMember(Member member);
     List<Post> findAllByActivateIsTrue(PageRequest pageRequest);
     Optional<Post> findByIdAndActivateIsTrue(Long id);
 }
