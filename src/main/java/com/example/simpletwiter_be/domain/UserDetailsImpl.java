@@ -1,5 +1,6 @@
 package com.example.simpletwiter_be.domain;
 
+
 import com.example.simpletwiter_be.shared.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,8 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private Users member;
+
+    private Member member;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -54,5 +56,4 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

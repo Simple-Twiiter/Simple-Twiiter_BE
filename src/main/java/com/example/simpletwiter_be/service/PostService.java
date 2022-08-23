@@ -1,7 +1,6 @@
 package com.example.simpletwiter_be.service;
 
 import com.example.simpletwiter_be.domain.Post;
-import com.example.simpletwiter_be.domain.Users;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;

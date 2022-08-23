@@ -1,7 +1,7 @@
 package com.example.simpletwiter_be.repository;
 
 import com.example.simpletwiter_be.domain.Post;
-import com.example.simpletwiter_be.domain.Users;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 

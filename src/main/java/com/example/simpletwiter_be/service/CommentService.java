@@ -1,9 +1,8 @@
 package com.example.simpletwiter_be.service;
 
-import antlr.Token;
+
 import com.example.simpletwiter_be.domain.Comment;
 import com.example.simpletwiter_be.domain.Post;
-import com.example.simpletwiter_be.domain.Users;
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
 import com.example.simpletwiter_be.dto.response.CommentResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -12,9 +11,7 @@ import com.example.simpletwiter_be.jwt.TokenProvider;
 import com.example.simpletwiter_be.repository.CommentRepository;
 import com.example.simpletwiter_be.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.hql.internal.ast.util.TokenPrinters;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
