@@ -1,6 +1,6 @@
 package com.example.simpletwiter_be.controller;
 
-import com.example.simpletwiter_be.domain.Member;
+import com.example.simpletwiter_be.domain.Users;
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
 import com.example.simpletwiter_be.dto.response.CommentResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -24,7 +24,7 @@ public class CommentController {
     @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.GET)
         public ResponseDto<?> getAllComments(@RequestParam(value = "pageSize", defaultValue = "50", required = false) int pageSize,
                                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                             @PathVariable Long id, Member member){
+                                             @PathVariable Long id, Users member){
             return commentService.getAllCommentsByPost(id, member,pageSize, page);
     }
 

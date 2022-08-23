@@ -26,6 +26,7 @@ public class Users extends Timestamped implements UserDetails {
     private String username;
     @Column
     private String password;
+    private String userImg;
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

@@ -1,7 +1,7 @@
 package com.example.simpletwiter_be.service;
 
-import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.domain.Post;
+import com.example.simpletwiter_be.domain.Users;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -13,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,13 +35,16 @@ class PostServiceTest {
     private PostService postService;
 
     @Mock
+    private ImageUploadService imageUploadService;
+
+    @Mock
     private PostRepository postRepository;
 
-    private static Member member;
+    private static Users member;
 
     @BeforeAll
     static void setUp(){
-        member = Member.builder()
+        member = Users.builder()
                 .username("test")
                 .password("test")
                 .userImg("")
@@ -51,7 +55,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 생성 성공-No img")
-    void postPost1() {
+    void postPost1() throws Exception {
         String title = "test title 1";
         String contents = "test contents 1";
         PostRequestDto postRequestDto = PostRequestDto.builder()
@@ -62,51 +66,55 @@ class PostServiceTest {
         Post post = Post.builder()
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
-                .imgUrl(postRequestDto.getImgUrl())
-                .member(member)
+                .users(member)
                 .activate(true)
                 .build();
         post.setCreatedAt(LocalDateTime.now());
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.save(any(Post.class))).thenReturn(post);
 
-        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto);
+        MockMultipartFile multipartFile = new MockMultipartFile("imgFile", (byte[]) null);
+        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto,multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
-        assertEquals(null, responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUsername());
+        assertNull(responseDto.getData().getImgUrl());
+        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
     }
 
     @Test
     @DisplayName("게시글 생성 성공-include img")
-    void postPost2() {
+    void postPost2() throws Exception {
         String title = "test title 2";
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .contents(contents)
                 .title(title)
-                .imgUrl(imgUrl)
                 .build();
 
         Post post = Post.builder()
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
-                .imgUrl(postRequestDto.getImgUrl())
-                .member(member)
+                .imgUrl(imgUrl)
+                .users(member)
                 .activate(true)
                 .build();
         post.setCreatedAt(LocalDateTime.now());
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.save(any(Post.class))).thenReturn(post);
+        when(imageUploadService.uploadImage(any(MockMultipartFile.class))).thenReturn(imgUrl);
 
-        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto);
+        MockMultipartFile multipartFile = new MockMultipartFile("imgFile",
+                "test.jpg",
+                "image/jpeg",
+                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
         assertEquals(imgUrl, responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
     }
 
     @Test
@@ -119,7 +127,7 @@ class PostServiceTest {
             Post post = Post.builder()
                     .contents(contents + i)
                     .title(title + i)
-                    .member(member)
+                    .users(member)
                     .activate(true)
                     .build();
             post.setCreatedAt(LocalDateTime.now());
@@ -132,8 +140,8 @@ class PostServiceTest {
         assertTrue(responseDto.isResult());
         assertEquals(title + 0, responseDto.getData().get(0).getTitle());
         assertEquals(contents + 0, responseDto.getData().get(0).getContents());
-        assertEquals(null, responseDto.getData().get(0).getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().get(0).getUsername());
+        assertNull(responseDto.getData().get(0).getImgUrl());
+        assertEquals(member.getUsername(), responseDto.getData().get(0).getUserDto().getUsername());
         assertEquals(20, responseDto.getData().size());
     }
 
@@ -146,14 +154,13 @@ class PostServiceTest {
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .contents(contents)
                 .title(title)
-                .imgUrl(imgUrl)
                 .build();
 
         Post post = Post.builder()
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
-                .imgUrl(postRequestDto.getImgUrl())
-                .member(member)
+                .imgUrl(imgUrl)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -166,7 +173,7 @@ class PostServiceTest {
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
         assertEquals(imgUrl, responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
     }
 
     @Test
@@ -178,14 +185,13 @@ class PostServiceTest {
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .contents(contents)
                 .title(title)
-                .imgUrl(imgUrl)
                 .build();
 
         Post post = Post.builder()
                 .contents(postRequestDto.getContents())
                 .title(postRequestDto.getTitle())
-                .imgUrl(postRequestDto.getImgUrl())
-                .member(member)
+                .imgUrl(imgUrl)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -208,7 +214,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(member)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -233,7 +239,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(member)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -254,7 +260,7 @@ class PostServiceTest {
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
 
-        Member otherMember = Member.builder()
+        Users otherMember = Users.builder()
                 .username("otherUser")
                 .build();
 
@@ -262,7 +268,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(otherMember)
+                .users(otherMember)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -277,7 +283,7 @@ class PostServiceTest {
     }
     @Test
     @DisplayName("게시글 수정 성공")
-    void putPost1() {
+    void putPost1() throws Exception {
         String title = "test title 2";
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
@@ -286,21 +292,25 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(member)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
         post.setCreatedAt(LocalDateTime.now());
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.of(post));
+        when(imageUploadService.uploadImage(any(MockMultipartFile.class))).thenReturn("test imgUrl 3");
 
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("test title 3")
                 .contents("test contents 3")
-                .imgUrl("test imgUrl 3")
                 .build();
 
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto);
+        MockMultipartFile multipartFile = new MockMultipartFile("image",
+                "test.jpg",
+                "image/jpeg",
+                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals("test title 3", responseDto.getData().getTitle());
         assertEquals("test contents 3", responseDto.getData().getContents());
@@ -310,7 +320,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 수정 실패-게시글 찾기 실패")
-    void putPost2() {
+    void putPost2() throws Exception {
         String title = "test title 2";
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
@@ -319,7 +329,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(member)
+                .users(member)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -330,10 +340,13 @@ class PostServiceTest {
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("test title 3")
                 .contents("test contents 3")
-                .imgUrl("test imgUrl 3")
                 .build();
 
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto);
+        MockMultipartFile multipartFile = new MockMultipartFile("image",
+                "test.jpg",
+                "image/jpeg",
+                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
         assertEquals("게시글을 찾을 수 없습니다.", responseDto.getMessage());
@@ -341,12 +354,12 @@ class PostServiceTest {
     }
     @Test
     @DisplayName("게시글 수정 실패-타인의 게시글")
-    void putPost3() {
+    void putPost3() throws Exception {
         String title = "test title 2";
         String contents = "test contents 2";
         String imgUrl = "test imgUrl 2";
 
-        Member otherMember = Member.builder()
+        Users otherMember = Users.builder()
                 .username("otherUser")
                 .build();
 
@@ -354,7 +367,7 @@ class PostServiceTest {
                 .contents(contents)
                 .title(title)
                 .imgUrl(imgUrl)
-                .member(otherMember)
+                .users(otherMember)
                 .activate(true)
                 .id(1L)
                 .build();
@@ -365,10 +378,13 @@ class PostServiceTest {
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("test title 3")
                 .contents("test contents 3")
-                .imgUrl("test imgUrl 3")
                 .build();
 
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto);
+        MockMultipartFile multipartFile = new MockMultipartFile("image",
+                "test.jpg",
+                "image/jpeg",
+                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
         assertEquals("자신이 작성한 게시글만 수정할 수 있습니다.", responseDto.getMessage());

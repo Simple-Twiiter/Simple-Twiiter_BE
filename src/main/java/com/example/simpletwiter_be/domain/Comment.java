@@ -28,7 +28,7 @@ public class Comment extends Timestamped {
 
     @JoinColumn(name = "member_id",nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private Users member;
 
 
 
@@ -39,7 +39,7 @@ public class Comment extends Timestamped {
 
     public void update(CommentRequestDto commentRequestDto){this.content = commentRequestDto.getContent();}
 
-    public boolean validateMember(Member member) {
+    public boolean validateMember(Users member) {
         return !this.member.equals(member);
     }
 }

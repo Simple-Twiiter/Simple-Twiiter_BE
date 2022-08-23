@@ -1,6 +1,5 @@
 package com.example.simpletwiter_be.dto.response;
 
-import com.example.simpletwiter_be.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
