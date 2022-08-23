@@ -1,14 +1,8 @@
 package com.example.simpletwiter_be.service;
 
-<<<<<<< HEAD
-
-import com.example.simpletwiter_be.domain.Comment;
-import com.example.simpletwiter_be.domain.Post;
-=======
 import com.example.simpletwiter_be.domain.Comment;
 import com.example.simpletwiter_be.domain.Post;
 import com.example.simpletwiter_be.domain.Member;
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
 import com.example.simpletwiter_be.dto.response.CommentResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -33,6 +27,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final TokenProvider tokenProvider;
+
     private final PostService postService;
     private PostRepository postRepository;
 

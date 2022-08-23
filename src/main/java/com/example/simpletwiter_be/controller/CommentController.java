@@ -1,9 +1,5 @@
 package com.example.simpletwiter_be.controller;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
 import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.dto.request.CommentRequestDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;

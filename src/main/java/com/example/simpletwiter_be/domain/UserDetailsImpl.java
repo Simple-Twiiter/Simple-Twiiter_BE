@@ -16,10 +16,6 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-<<<<<<< HEAD
-
-=======
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
     private Member member;
 
     @Override
