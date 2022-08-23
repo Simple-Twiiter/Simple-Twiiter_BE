@@ -1,10 +1,7 @@
 package com.example.simpletwiter_be.service;
 
-import com.example.simpletwiter_be.domain.Post;
-<<<<<<< HEAD
-=======
 import com.example.simpletwiter_be.domain.Member;
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
+import com.example.simpletwiter_be.domain.Post;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -15,11 +12,13 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Builder
@@ -30,7 +29,7 @@ public class PostService {
     private final UserGetterFromToken userGetterFromToken;
 
     public ResponseDto<?> postPost(HttpServletRequest request, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception {
-        Member member = userGetterFromToken.UserGetterFromToken(request).;
+        Member member = userGetterFromToken.UserGetterFromToken(request).getMember();
         return postPost(member, postRequestDto, multipartFile);
     }
 
@@ -167,5 +166,12 @@ public class PostService {
                     .build());
         }
     }
+
+    @Transactional(readOnly = true)
+    public Post isPresentPost(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        return optionalPost.orElse(null);
+    }
+
 
 }

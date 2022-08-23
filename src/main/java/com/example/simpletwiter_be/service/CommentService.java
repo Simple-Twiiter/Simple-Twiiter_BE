@@ -85,7 +85,7 @@ public class CommentService {
 
         for (Comment comment : commentList) {
 
-            UserDto userDto = new UserDto(member.getUsername(), member.getUserImg());
+            UserDto userDto = new UserDto(member.getUsername(), member.getUserImg(), false);
 
 
             commentResponseDtoList.add(

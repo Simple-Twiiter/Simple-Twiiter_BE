@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
@@ -36,5 +37,12 @@ public class Post extends Timestamped{
         this.title = title;
         this.contents = contents;
         this.imgUrl = imgUrl;
+    }
+
+    @Column
+    private int heartCount;
+
+    public void update(List<PostHeart> postHearts){
+        this.heartCount = postHearts.size();
     }
 }
