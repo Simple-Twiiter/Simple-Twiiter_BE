@@ -1,6 +1,6 @@
 package com.example.simpletwiter_be.service;
 
-import com.example.simpletwiter_be.domain.Users;
+import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.dto.request.UserRequestDto;
 import com.example.simpletwiter_be.dto.response.Response;
 import com.example.simpletwiter_be.dto.response.UserResponseDto;
@@ -32,7 +32,7 @@ public class UsersService {
         if (usersRepository.existsByUsername(signUp.getUsername())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
-        Users user = Users.builder()
+        Member user = Member.builder()
                 .username(signUp.getUsername())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .build();
