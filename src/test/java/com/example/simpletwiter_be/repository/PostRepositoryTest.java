@@ -1,13 +1,12 @@
 package com.example.simpletwiter_be.repository;
 
-import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.domain.Post;
+import com.example.simpletwiter_be.domain.Users;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,19 +20,19 @@ class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private UsersRepository memberRepository;
 
-    static private Member member1;
-    static private Member member2;
+    static private Users member1;
+    static private Users member2;
 
 
     @BeforeAll
     static void setUp(){
-        member1 = Member.builder()
+        member1 = Users.builder()
                 .username("member1")
                 .password("password1")
                 .build();
-        member2 = Member.builder()
+        member2 = Users.builder()
                 .username("member2")
                 .password("password2")
                 .build();
@@ -41,13 +40,13 @@ class PostRepositoryTest {
 
     @Test
     void save(){
-        Member returnMember = memberRepository.save(member1);
+        Users returnMember = memberRepository.save(member1);
         String title = "post";
         String contents = "post";
         Post post = Post.builder()
                 .contents(contents)
                 .title(title)
-                .member(returnMember)
+                .users(returnMember)
                 .activate(true)
                 .build();
 
@@ -60,8 +59,8 @@ class PostRepositoryTest {
     }
     @Test
     void getAll(){
-        Member[] memberList= {member1, member1, member2, member2, member2};
-        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Users[] memberList= {member1, member1, member2, member2, member2};
+        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -70,12 +69,12 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .member(returnMemberList.get(i))
+                    .users(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);
         }
-        List<Post> returnPostList = postRepository.saveAll(postList);
+        postRepository.saveAll(postList);
 
         PageRequest pageRequest1 = PageRequest.of(0,2);
         List<Post> postList1 = postRepository.findAllByActivateIsTrue(pageRequest1);
@@ -98,8 +97,8 @@ class PostRepositoryTest {
 
     @Test
     void getOne(){
-        Member[] memberList= {member1, member1, member2, member2, member2};
-        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Users[] memberList= {member1, member1, member2, member2, member2};
+        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -108,7 +107,7 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .member(returnMemberList.get(i))
+                    .users(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);
@@ -123,8 +122,8 @@ class PostRepositoryTest {
     }
     @Test
     void update(){
-        Member[] memberList= {member1, member1, member2, member2, member2};
-        List<Member> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
+        Users[] memberList= {member1, member1, member2, member2, member2};
+        List<Users> returnMemberList = memberRepository.saveAll(Arrays.asList(memberList));
 
         boolean[] activateList = {true, false, true,false,true};
 
@@ -133,7 +132,7 @@ class PostRepositoryTest {
             Post post = Post.builder()
                     .contents("post" + i)
                     .title("post" + i)
-                    .member(returnMemberList.get(i))
+                    .users(returnMemberList.get(i))
                     .activate(activateList[i])
                     .build();
             postList.add(post);

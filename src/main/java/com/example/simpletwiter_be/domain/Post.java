@@ -26,7 +26,7 @@ public class Post extends Timestamped{
     private Boolean activate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false,updatable = false)
-    private Member member;
+    private Users users;
 
     public void disable(){
         this.activate = false;

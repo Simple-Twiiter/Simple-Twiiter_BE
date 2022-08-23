@@ -11,5 +11,4 @@ public class PostRequestDto {
     private final String title;
     @NotNull
     private final String contents;
-    private final String imgUrl;
 }
