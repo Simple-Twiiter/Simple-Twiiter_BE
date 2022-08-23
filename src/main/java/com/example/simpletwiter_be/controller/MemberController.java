@@ -23,12 +23,12 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @RequestMapping(value = "/api/members/signup", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/signup", method = RequestMethod.POST)
     public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto requestDto) {
         return memberService.createMember(requestDto);
     }
 
-    @RequestMapping(value = "/api/members/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
     public ResponseDto<?> login(@RequestBody @Valid LoginRequestDto requestDto,
                                 HttpServletResponse response
     ) {
@@ -36,7 +36,7 @@ public class MemberController {
         return memberService.login(requestDto, response);
     }
 
-    @RequestMapping(value = "/api/members/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/logout", method = RequestMethod.POST)
     public ResponseDto<?> logout(HttpServletRequest request) {
         return memberService.logout(request);
     }
