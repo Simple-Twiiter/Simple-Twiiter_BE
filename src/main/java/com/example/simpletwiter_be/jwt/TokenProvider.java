@@ -2,7 +2,7 @@ package com.example.simpletwiter_be.jwt;
 
 import com.example.simpletwiter_be.domain.RefreshToken;
 import com.example.simpletwiter_be.domain.UserDetailsImpl;
-import com.example.simpletwiter_be.domain.Users;
+import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.dto.request.TokenDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
 import com.example.simpletwiter_be.repository.RefreshTokenRepository;
@@ -43,7 +43,7 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDto generateTokenDto(Users member) {
+    public TokenDto generateTokenDto(Member member) {
         long now = (new Date().getTime());
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
@@ -75,7 +75,7 @@ public class TokenProvider {
                 .build();
 
     }
-    public Users getMemberFromAuthentication() {
+    public Member getMemberFromAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || AnonymousAuthenticationToken.class.
                 isAssignableFrom(authentication.getClass())) {
@@ -100,13 +100,13 @@ public class TokenProvider {
         return false;
     }
     @Transactional(readOnly = true)
-    public RefreshToken isPresentRefreshToken(Users member) {
+    public RefreshToken isPresentRefreshToken(Member member) {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByMember(member);
         return optionalRefreshToken.orElse(null);
     }
 
     @Transactional
-    public ResponseDto<?> deleteRefreshToken(Users member) {
+    public ResponseDto<?> deleteRefreshToken(Member member) {
         RefreshToken refreshToken = isPresentRefreshToken(member);
         if (null == refreshToken) {
             return ResponseDto.fail("존재하지 않는 Token 입니다.");

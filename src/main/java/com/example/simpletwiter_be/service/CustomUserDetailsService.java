@@ -1,7 +1,7 @@
 package com.example.simpletwiter_be.service;
 
 
-import com.example.simpletwiter_be.domain.Users;
+import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 리턴
-    private UserDetails createUserDetails(Users users) {
-        return new User(users.getUsername(), users.getPassword(), users.getAuthorities());
+    private UserDetails createUserDetails(Member member) {
+        return new User(member.getUsername(), member.getPassword(), member.getAuthorities());
     }
 }
