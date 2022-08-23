@@ -1,13 +1,8 @@
 package com.example.simpletwiter_be.service;
 
-import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.domain.UserDetailsImpl;
-<<<<<<< HEAD
-import com.example.simpletwiter_be.repository.MemberRepository;
-=======
 import com.example.simpletwiter_be.domain.Member;
-import com.example.simpletwiter_be.repository.UsersRepository;
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
+import com.example.simpletwiter_be.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

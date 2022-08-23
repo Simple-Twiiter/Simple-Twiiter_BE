@@ -71,7 +71,7 @@ class PostServiceTest {
         when(postRepository.save(any(Post.class))).thenReturn(post);
 
         MockMultipartFile multipartFile = new MockMultipartFile("imgFile", (byte[]) null);
-        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto,multipartFile);
+        ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.postPost(member,postRequestDto,multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
@@ -106,7 +106,7 @@ class PostServiceTest {
                 "test.jpg",
                 "image/jpeg",
                 new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
-        ResponseDto<PostResponseDto> responseDto= postService.postPost(member,postRequestDto, multipartFile);
+        ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.postPost(member,postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
@@ -133,7 +133,7 @@ class PostServiceTest {
         }
         when(postRepository.findAllByActivateIsTrue(any(PageRequest.class))).thenReturn(postList.subList(0,20));
 
-        ResponseDto<List<PostResponseDto>> responseDto= postService.getPostList(member, 0,20);
+        ResponseDto<List<PostResponseDto>> responseDto= (ResponseDto<List<PostResponseDto>>) postService.getPostList(member, 0,20);
         assertTrue(responseDto.isResult());
         assertEquals(title + 0, responseDto.getData().get(0).getTitle());
         assertEquals(contents + 0, responseDto.getData().get(0).getContents());
@@ -165,7 +165,7 @@ class PostServiceTest {
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.of(post));
 
-        ResponseDto<PostResponseDto> responseDto= postService.getPostDetail(member,1L);
+        ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.getPostDetail(member,1L);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
@@ -196,7 +196,7 @@ class PostServiceTest {
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.empty());
 
-        ResponseDto<PostResponseDto> responseDto= postService.getPostDetail(member,1L);
+        ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.getPostDetail(member,1L);
         assertFalse(responseDto.isResult());
         assertEquals("게시글을 찾을 수 없습니다.", responseDto.getMessage());
     }
@@ -307,7 +307,7 @@ class PostServiceTest {
                 "test.jpg",
                 "image/jpeg",
                 new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
+        ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals("test title 3", responseDto.getData().getTitle());
         assertEquals("test contents 3", responseDto.getData().getContents());
@@ -343,7 +343,7 @@ class PostServiceTest {
                 "test.jpg",
                 "image/jpeg",
                 new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
+        ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
         assertEquals("게시글을 찾을 수 없습니다.", responseDto.getMessage());
@@ -381,7 +381,7 @@ class PostServiceTest {
                 "test.jpg",
                 "image/jpeg",
                 new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
-        ResponseDto<PostResponseDto> responseDto = postService.putPost(member, 1L, postRequestDto, multipartFile);
+        ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
         assertEquals("자신이 작성한 게시글만 수정할 수 있습니다.", responseDto.getMessage());

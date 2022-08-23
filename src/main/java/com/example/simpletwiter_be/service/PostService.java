@@ -1,10 +1,7 @@
 package com.example.simpletwiter_be.service;
 
 import com.example.simpletwiter_be.domain.Post;
-<<<<<<< HEAD
-=======
 import com.example.simpletwiter_be.domain.Member;
->>>>>>> 3f57b00f289599c7383c33a09645384cd94a4d68
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
@@ -15,6 +12,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +27,9 @@ public class PostService {
     private final ImageUploadService imageUploadService;
     private final UserGetterFromToken userGetterFromToken;
 
-    public ResponseDto<?> postPost(HttpServletRequest request, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception {
-        Member member = userGetterFromToken.UserGetterFromToken(request).;
-        return postPost(member, postRequestDto, multipartFile);
-    }
 
-    public ResponseDto<PostResponseDto> postPost(Member member, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception{
+    @Transactional
+    public ResponseDto<?> postPost(Member member, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception{
         String imgUrl = null;
         if (!multipartFile.isEmpty()){
             imgUrl = imageUploadService.uploadImage(multipartFile);
@@ -63,12 +58,8 @@ public class PostService {
                 .build());
     }
 
-    public ResponseDto<?> getPostList(HttpServletRequest request, int page, int pageSize){
-        Member member = Member.builder().build();
-        return getPostList(member, page, pageSize);
-    }
-
-    public ResponseDto<List<PostResponseDto>> getPostList(Member member, int page, int pageSize){
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getPostList(Member member, int page, int pageSize){
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         List<Post> postList = postRepository.findAllByActivateIsTrue(pageRequest);
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
@@ -92,12 +83,8 @@ public class PostService {
         return ResponseDto.success(postResponseDtoList);
     }
 
-    public ResponseDto<?> getPostDetail(HttpServletRequest request, Long postId){
-        Member member = Member.builder().build();
-        return getPostDetail(member, postId);
-    }
-
-    public ResponseDto<PostResponseDto> getPostDetail(Member member, Long postId){
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getPostDetail(Member member, Long postId){
         Post post = postRepository.findByIdAndActivateIsTrue(postId).orElse(null);
         if (post == null){
             return ResponseDto.fail("게시글을 찾을 수 없습니다.");
@@ -119,11 +106,8 @@ public class PostService {
         }
     }
 
-    public ResponseDto<PostResponseDto> deletePost(HttpServletRequest request, Long postId){
-        Member member = Member.builder().build();
-        return deletePost(member, postId);
-    }
-    public ResponseDto<PostResponseDto> deletePost(Member member, Long postId){
+    @Transactional
+    public ResponseDto<?> deletePost(Member member, Long postId){
         Post post = postRepository.findByIdAndActivateIsTrue(postId).orElse(null);
         if (post == null) {
             return ResponseDto.fail("게시글을 찾을 수 없습니다.");
@@ -135,11 +119,8 @@ public class PostService {
         }
     }
 
-    public ResponseDto<PostResponseDto> putPost(HttpServletRequest request, Long postId, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception {
-        Member member = Member.builder().build();
-        return putPost(member, postId, postRequestDto, multipartFile);
-    }
-    public ResponseDto<PostResponseDto> putPost(Member member, Long postId, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception {
+    @Transactional
+    public ResponseDto<?> putPost(Member member, Long postId, PostRequestDto postRequestDto, MultipartFile multipartFile) throws Exception {
         Post post = postRepository.findByIdAndActivateIsTrue(postId).orElse(null);
         if (post == null) {
             return ResponseDto.fail("게시글을 찾을 수 없습니다.");
