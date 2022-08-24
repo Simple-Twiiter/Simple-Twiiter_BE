@@ -73,7 +73,7 @@ public class CommentService {
         );
     }
 
-
+    @Transactional
     public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElse(null);
 
@@ -95,7 +95,7 @@ public class CommentService {
                         .member(userDto)
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .isMine(post.getMember().equals(member))
+                        .isMine(comment.getMember().equals(member))
                         .build();
                 commentResponseDtoList.add(commentResponseDto);
 
