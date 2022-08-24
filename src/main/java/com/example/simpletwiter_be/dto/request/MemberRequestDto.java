@@ -3,12 +3,17 @@ package com.example.simpletwiter_be.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
@@ -25,6 +30,8 @@ public class MemberRequestDto {
 
     @NotBlank
     private String passwordConfirm;
+
+    private MultipartFile imgFile;
 
 
 }
