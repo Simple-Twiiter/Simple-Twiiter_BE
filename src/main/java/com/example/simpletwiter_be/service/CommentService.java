@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class CommentService {
                         .member(userDto)
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .isMine(comment.getMember().equals(member))
+                        .isMine(post.getMember().equals(member))
                         .build();
                 commentResponseDtoList.add(commentResponseDto);
 
@@ -135,10 +136,11 @@ public class CommentService {
         }
 
         comment.update(requestDto);
+        UserDto userDto = new UserDto(comment.getMember().getUsername(), comment.getMember().getUserImg(), false);
         return ResponseDto.success(
                 CommentResponseDto.builder()
                         .id(comment.getId())
-
+                        .member(userDto)
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
