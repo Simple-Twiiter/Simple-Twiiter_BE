@@ -60,6 +60,7 @@ public class PostService {
                         .modifiedAt(returnPost.getModifiedAt().toLocalDate())
                         .isMine(true)
                         .isLike(false)
+                        .heartCount(0)
                         .member(userDto)
                 .build());
     }
@@ -87,6 +88,7 @@ public class PostService {
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
                     .member(userDto)
+                    .heartCount(post.getHeartCount())
                     .build();
             postResponseDtoList.add(postResponseDto);
         }
@@ -116,6 +118,7 @@ public class PostService {
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
                     .member(userDto)
+                    .heartCount(post.getHeartCount())
                     .build());
         }
     }
@@ -163,6 +166,7 @@ public class PostService {
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
                     .member(userDto)
+                            .heartCount(post.getHeartCount())
                     .build());
         }
     }
