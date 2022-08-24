@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentController {
     private final CommentService commentService;
 
-    @RequestMapping(value = "/api/comment", method = RequestMethod.POST)
-    public ResponseDto<?> createComment(@RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
-        return commentService.createComment(requestDto.getPostId(), requestDto, request);
+    @RequestMapping(value = "/api/comment/{postId}", method = RequestMethod.POST)
+    public ResponseDto<?> createComment(@PathVariable Long postId,@RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+        return commentService.createComment(postId,requestDto, request);
     }
     @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.GET)
         public ResponseDto<?> getAllComments(@PathVariable Long id, Member member){
