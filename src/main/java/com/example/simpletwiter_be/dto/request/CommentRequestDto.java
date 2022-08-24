@@ -14,11 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequestDto {
-    private Long id;
-    private String username;
+    private Long postId;
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
 
 

@@ -1,5 +1,7 @@
 package com.example.simpletwiter_be.configuration;
 
+//import com.example.simpletwiter_be.jwt.AccessDeniedHandlerException;
+//import com.example.simpletwiter_be.jwt.AuthenticationEntryPointException;
 import com.example.simpletwiter_be.jwt.AccessDeniedHandlerException;
 import com.example.simpletwiter_be.jwt.AuthenticationEntryPointException;
 import com.example.simpletwiter_be.jwt.TokenProvider;
@@ -76,6 +78,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/post").permitAll()
                 .antMatchers("/api/post/**").permitAll()
                 .antMatchers("/api/postLike/**").permitAll()
                 .antMatchers("/api/comment/**").permitAll()

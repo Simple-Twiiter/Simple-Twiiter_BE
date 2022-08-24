@@ -26,8 +26,7 @@ public class PostController {
     @PostMapping
     public ResponseDto<?> postPost(HttpServletRequest request,
                                    @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("json") String json) throws Exception {
-        PostRequestDto postRequestDto = objectMapper.readValue(json, PostRequestDto.class);
+                                   @RequestPart("json") PostRequestDto postRequestDto) {
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.postPost(member, postRequestDto, multipartFile);
