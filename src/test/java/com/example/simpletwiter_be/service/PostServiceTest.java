@@ -5,6 +5,7 @@ import com.example.simpletwiter_be.domain.Member;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
+import com.example.simpletwiter_be.repository.PostHeartRepository;
 import com.example.simpletwiter_be.repository.PostRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,8 @@ class PostServiceTest {
 
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private PostHeartRepository postHeartRepository;
 
     private static Member member;
 
@@ -76,7 +79,7 @@ class PostServiceTest {
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
         assertNull(responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().getMember().getUsername());
     }
 
     @Test
@@ -111,7 +114,7 @@ class PostServiceTest {
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
         assertEquals(imgUrl, responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().getMember().getUsername());
     }
 
     @Test
@@ -132,13 +135,14 @@ class PostServiceTest {
             postList.add(post);
         }
         when(postRepository.findAllByActivateIsTrue(any(PageRequest.class))).thenReturn(postList.subList(0,20));
+        when(postHeartRepository.findByPostAndMember(any(),any())).thenReturn(Optional.empty());
 
         ResponseDto<List<PostResponseDto>> responseDto= (ResponseDto<List<PostResponseDto>>) postService.getPostList(member, 0,20);
         assertTrue(responseDto.isResult());
         assertEquals(title + 0, responseDto.getData().get(0).getTitle());
         assertEquals(contents + 0, responseDto.getData().get(0).getContents());
         assertNull(responseDto.getData().get(0).getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().get(0).getUserDto().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().get(0).getMember().getUsername());
         assertEquals(20, responseDto.getData().size());
     }
 
@@ -164,13 +168,14 @@ class PostServiceTest {
         post.setCreatedAt(LocalDateTime.now());
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.of(post));
+        when(postHeartRepository.findByPostAndMember(any(),any())).thenReturn(Optional.empty());
 
         ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.getPostDetail(member,1L);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
         assertEquals(contents, responseDto.getData().getContents());
         assertEquals(imgUrl, responseDto.getData().getImgUrl());
-        assertEquals(member.getUsername(), responseDto.getData().getUserDto().getUsername());
+        assertEquals(member.getUsername(), responseDto.getData().getMember().getUsername());
     }
 
     @Test
@@ -297,6 +302,7 @@ class PostServiceTest {
         post.setModifiedAt(LocalDateTime.now());
         when(postRepository.findByIdAndActivateIsTrue(any(Long.class))).thenReturn(Optional.of(post));
         when(imageUploadService.uploadImage(any(MockMultipartFile.class))).thenReturn("test imgUrl 3");
+        when(postHeartRepository.findByPostAndMember(any(),any())).thenReturn(Optional.empty());
 
         PostRequestDto postRequestDto = PostRequestDto.builder()
                 .title("test title 3")

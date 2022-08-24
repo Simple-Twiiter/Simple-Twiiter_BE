@@ -39,8 +39,8 @@ public class PostController {
 
     @GetMapping
     public ResponseDto<?> getPostList(HttpServletRequest request,
-                                      @RequestParam("page") int page,
-                                      @RequestParam("pageSize") int pageSize){
+                                      @RequestParam(value = "page",defaultValue = "0") int page,
+                                      @RequestParam(value = "pageSize",defaultValue = "20") int pageSize){
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.getPostList(member, page, pageSize);
