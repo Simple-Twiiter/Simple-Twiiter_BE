@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -75,9 +76,21 @@ public class CommentService {
 
 
     @Transactional
-    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, HttpServletRequest request) {
         Post post = postRepository.findById(postId).orElse(null);
 
+        if (null == request.getHeader("RefreshToken")) {
+            return ResponseDto.fail("로그인이 필요합니다.");
+        }
+
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("로그인이 필요합니다.");
+        }
+
+        Member member = validateMember(request);
+        if (null == member) {
+            return ResponseDto.fail("Token이 유효하지 않습니다.");
+        }
         if (post == null) {
             return ResponseDto.fail("해당 게시글을 찾을 수 없습니다.");
         } else {
@@ -95,7 +108,7 @@ public class CommentService {
                         .member(userDto)
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .isMine(comment.getMember().equals(member))
+                        .isMine(post.getMember().equals(member))
                         .build();
                 commentResponseDtoList.add(commentResponseDto);
 
@@ -136,10 +149,11 @@ public class CommentService {
         }
 
         comment.update(requestDto);
+        UserDto userDto = new UserDto(comment.getMember().getUsername(), comment.getMember().getUserImg(), false);
         return ResponseDto.success(
                 CommentResponseDto.builder()
                         .id(comment.getId())
-
+                        .member(userDto)
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
