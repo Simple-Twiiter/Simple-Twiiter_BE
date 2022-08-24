@@ -26,7 +26,12 @@ public class PostController {
     @PostMapping
     public ResponseDto<?> postPost(HttpServletRequest request,
                                    @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("json") PostRequestDto postRequestDto) {
+                                   @RequestPart("title") String title,
+                                   @RequestPart("contents") String contents) {
+        PostRequestDto postRequestDto = PostRequestDto.builder()
+                .contents(contents)
+                .title(title)
+                .build();
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.postPost(member, postRequestDto, multipartFile);
@@ -81,8 +86,12 @@ public class PostController {
     public  ResponseDto<?> putPost(HttpServletRequest request,
                                    @PathVariable("postId") Long postId,
                                    @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("json") String json) throws Exception {
-        PostRequestDto postRequestDto = objectMapper.readValue(json, PostRequestDto.class);
+                                   @RequestPart("title") String title,
+                                   @RequestPart("contents") String contents)  throws Exception {
+        PostRequestDto postRequestDto = PostRequestDto.builder()
+                .title(title)
+                .contents(contents)
+                .build();
 
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
