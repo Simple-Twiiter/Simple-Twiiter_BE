@@ -24,9 +24,8 @@ public class PostController {
     private final UserGetterFromToken userGetterFromToken;
 
     @PostMapping
-    public ResponseDto<?> postPost(HttpServletRequest request,
-                                   @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("json") PostRequestDto postRequestDto) {
+    public ResponseDto<?> postPost(HttpServletRequest request, @ModelAttribute PostRequestDto postRequestDto){
+        MultipartFile multipartFile = postRequestDto.getImgFile();
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.postPost(member, postRequestDto, multipartFile);
@@ -39,8 +38,8 @@ public class PostController {
 
     @GetMapping
     public ResponseDto<?> getPostList(HttpServletRequest request,
-                                      @RequestParam("page") int page,
-                                      @RequestParam("pageSize") int pageSize){
+                                      @RequestParam(value = "page",defaultValue = "0") int page,
+                                      @RequestParam(value = "pageSize",defaultValue = "20") int pageSize){
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.getPostList(member, page, pageSize);
@@ -80,10 +79,8 @@ public class PostController {
     @PutMapping("/{postId}")
     public  ResponseDto<?> putPost(HttpServletRequest request,
                                    @PathVariable("postId") Long postId,
-                                   @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("json") String json) throws Exception {
-        PostRequestDto postRequestDto = objectMapper.readValue(json, PostRequestDto.class);
-
+                                   @ModelAttribute PostRequestDto postRequestDto) throws Exception{
+        MultipartFile multipartFile = postRequestDto.getImgFile();
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.putPost(member, postId, postRequestDto, multipartFile);

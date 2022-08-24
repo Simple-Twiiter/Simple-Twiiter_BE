@@ -3,6 +3,7 @@ package com.example.simpletwiter_be.dto.request;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -11,4 +12,5 @@ public class PostRequestDto {
     private final String title;
     @NotNull
     private final String contents;
+    private final MultipartFile imgFile;
 }

@@ -12,6 +12,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +27,7 @@ class ImageUploadServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("image",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
 
         String imgUrl = imageUploadService.uploadImage(multipartFile);
         assertNotNull(imgUrl);
