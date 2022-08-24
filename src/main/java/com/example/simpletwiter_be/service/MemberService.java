@@ -46,7 +46,7 @@ public class MemberService {
         if (!multipartFile.isEmpty()){
             userImg = imageUploadService.uploadImage(multipartFile);
         }
-
+        
         Member member = Member.builder()
                 .username(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
