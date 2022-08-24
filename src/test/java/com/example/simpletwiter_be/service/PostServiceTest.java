@@ -108,7 +108,7 @@ class PostServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("imgFile",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
         ResponseDto<PostResponseDto> responseDto= (ResponseDto<PostResponseDto>) postService.postPost(member,postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals(title, responseDto.getData().getTitle());
@@ -312,7 +312,7 @@ class PostServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("image",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
         ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertTrue(responseDto.isResult());
         assertEquals("test title 3", responseDto.getData().getTitle());
@@ -348,7 +348,7 @@ class PostServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("image",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
         ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
@@ -386,7 +386,7 @@ class PostServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("image",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/Users/mkkim/Downloads/GAw5c99f58892eb6.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
         ResponseDto<PostResponseDto> responseDto = (ResponseDto<PostResponseDto>) postService.putPost(member, 1L, postRequestDto, multipartFile);
         assertFalse(responseDto.isResult());
         assertNull(responseDto.getData());
