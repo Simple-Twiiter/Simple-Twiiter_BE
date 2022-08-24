@@ -2,10 +2,12 @@ package com.example.simpletwiter_be.service;
 
 import com.example.simpletwiter_be.domain.Post;
 import com.example.simpletwiter_be.domain.Member;
+import com.example.simpletwiter_be.domain.PostHeart;
 import com.example.simpletwiter_be.dto.request.PostRequestDto;
 import com.example.simpletwiter_be.dto.response.PostResponseDto;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
 import com.example.simpletwiter_be.dto.response.UserDto;
+import com.example.simpletwiter_be.repository.PostHeartRepository;
 import com.example.simpletwiter_be.repository.PostRepository;
 import com.example.simpletwiter_be.shared.UserGetterFromToken;
 import lombok.Builder;
@@ -25,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final PostHeartRepository postHeartRepository;
     private final ImageUploadService imageUploadService;
     private final UserGetterFromToken userGetterFromToken;
 
@@ -46,6 +49,7 @@ public class PostService {
         UserDto userDto = UserDto.builder()
                 .userImg(returnPost.getMember().getUserImg())
                 .username(returnPost.getMember().getUsername())
+                .isFollow(false)
                 .build();
         return ResponseDto.success(PostResponseDto.builder()
                         .contents(returnPost.getContents())
@@ -55,6 +59,7 @@ public class PostService {
                         .createdAt(returnPost.getCreatedAt().toLocalDate())
                         .modifiedAt(returnPost.getModifiedAt().toLocalDate())
                         .isMine(true)
+                        .isLike(false)
                         .userDto(userDto)
                 .build());
     }
@@ -68,17 +73,21 @@ public class PostService {
             UserDto userDto = UserDto.builder()
                     .userImg(post.getMember().getUserImg())
                     .username(post.getMember().getUsername())
+                    .isFollow(false)
                     .build();
+            PostHeart postHeart = postHeartRepository.findByPostAndMember(post,member).orElse(null);
+            boolean isLike = postHeart != null && postHeart.getPostHeart()==1;
             PostResponseDto postResponseDto = PostResponseDto.builder()
-                .contents(post.getContents())
-                .title(post.getTitle())
-                .imgUrl(post.getImgUrl())
-                .id(post.getId())
-                .createdAt(post.getCreatedAt().toLocalDate())
-                .modifiedAt(post.getModifiedAt().toLocalDate())
-                .isMine(post.getMember().equals(member))
-                .userDto(userDto)
-                .build();
+                    .contents(post.getContents())
+                    .title(post.getTitle())
+                    .imgUrl(post.getImgUrl())
+                    .id(post.getId())
+                    .createdAt(post.getCreatedAt().toLocalDate())
+                    .modifiedAt(post.getModifiedAt().toLocalDate())
+                    .isMine(post.getMember().equals(member))
+                    .isLike(isLike)
+                    .userDto(userDto)
+                    .build();
             postResponseDtoList.add(postResponseDto);
         }
         return ResponseDto.success(postResponseDtoList);
@@ -93,7 +102,10 @@ public class PostService {
             UserDto userDto = UserDto.builder()
                     .userImg(post.getMember().getUserImg())
                     .username(post.getMember().getUsername())
+                    .isFollow(false)
                     .build();
+            PostHeart postHeart = postHeartRepository.findByPostAndMember(post,member).orElse(null);
+            boolean isLike = postHeart != null && postHeart.getPostHeart()==1;
             return ResponseDto.success(PostResponseDto.builder()
                     .contents(post.getContents())
                     .title(post.getTitle())
@@ -102,6 +114,7 @@ public class PostService {
                     .createdAt(post.getCreatedAt().toLocalDate())
                     .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
+                    .isLike(isLike)
                     .userDto(userDto)
                     .build());
         }
@@ -136,7 +149,10 @@ public class PostService {
             UserDto userDto = UserDto.builder()
                     .userImg(post.getMember().getUserImg())
                     .username(post.getMember().getUsername())
+                    .isFollow(false)
                     .build();
+            PostHeart postHeart = postHeartRepository.findByPostAndMember(post,member).orElse(null);
+            boolean isLike = postHeart != null && postHeart.getPostHeart()==1;
             return ResponseDto.success(PostResponseDto.builder()
                     .contents(post.getContents())
                     .title(post.getTitle())
@@ -145,6 +161,7 @@ public class PostService {
                     .createdAt(post.getCreatedAt().toLocalDate())
                     .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
+                    .isLike(isLike)
                     .userDto(userDto)
                     .build());
         }
