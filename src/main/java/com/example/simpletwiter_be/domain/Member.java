@@ -23,13 +23,10 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String username;
 
-    private String userImg;
-
     @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
     private String userImg;
 
     @Override
