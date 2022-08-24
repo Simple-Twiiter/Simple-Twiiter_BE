@@ -75,10 +75,10 @@ public class SecurityConfiguration {
                 //인증일 필요없는 API 설정정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/members/**").permitAll()
-                .antMatchers("/api/posts/**").permitAll()
-                .antMatchers("/api/posthearts/**").permitAll()
-                .antMatchers("/api/comments/**").permitAll()
+                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/post/**").permitAll()
+                .antMatchers("/api/postLike/**").permitAll()
+                .antMatchers("/api/comment/**").permitAll()
                 .anyRequest().authenticated()
 
                 // JWT 인증방식 커스텀텀
