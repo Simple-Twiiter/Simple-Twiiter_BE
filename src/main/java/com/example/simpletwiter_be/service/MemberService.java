@@ -65,7 +65,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
+    public ResponseDto<?> login(LoginRequestDto requestDto,HttpServletResponse response) {
         Member member = isPresentMember(requestDto.getUsername());
         if (null == member) {
             return ResponseDto.fail("사용자를 찾을 수 없습니다.");
@@ -75,6 +75,7 @@ public class MemberService {
             return ResponseDto.fail("사용자를 찾을 수 없습니다.");
         }
 
+
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
         tokenToHeaders(tokenDto, response);
 
@@ -82,6 +83,7 @@ public class MemberService {
                 MemberResponseDto.builder()
                         .id(member.getId())
                         .username(member.getUsername())
+                        .userImg(member.getUserImg())
                         .createdAt(member.getCreatedAt())
                         .modifiedAt(member.getModifiedAt())
                         .build()

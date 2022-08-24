@@ -75,7 +75,8 @@ public class CommentService {
     }
 
 
-    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId,Member member) {
+    @Transactional
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElse(null);
 
         if (post == null) {
