@@ -31,10 +31,12 @@ class PostRepositoryTest {
         member1 = Member.builder()
                 .username("member1")
                 .password("password1")
+                .userImg("")
                 .build();
         member2 = Member.builder()
                 .username("member2")
                 .password("password2")
+                .userImg("")
                 .build();
     }
 
