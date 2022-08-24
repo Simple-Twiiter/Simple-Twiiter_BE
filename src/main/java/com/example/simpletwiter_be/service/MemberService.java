@@ -34,7 +34,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseDto<?> createMember(MemberRequestDto requestDto, MultipartFile multipartFile) throws Exception {
+    public ResponseDto<?> createMember(MemberRequestDto requestDto) throws Exception {
         String userImg = null;
         if (null != isPresentMember(requestDto.getUsername())) {
             return ResponseDto.fail("중복된 닉네임 입니다.");
@@ -43,8 +43,8 @@ public class MemberService {
         if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
             return ResponseDto.fail("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
-        if (!multipartFile.isEmpty()){
-            userImg = imageUploadService.uploadImage(multipartFile);
+        if (!requestDto.getImgFile().isEmpty()){
+            userImg = imageUploadService.uploadImage(requestDto.getImgFile());
         }
         
         Member member = Member.builder()
