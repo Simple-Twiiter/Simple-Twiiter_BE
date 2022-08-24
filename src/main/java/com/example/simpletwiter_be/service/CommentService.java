@@ -76,9 +76,21 @@ public class CommentService {
 
 
     @Transactional
-    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, HttpServletRequest request) {
         Post post = postRepository.findById(postId).orElse(null);
 
+        if (null == request.getHeader("RefreshToken")) {
+            return ResponseDto.fail("로그인이 필요합니다.");
+        }
+
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("로그인이 필요합니다.");
+        }
+
+        Member member = validateMember(request);
+        if (null == member) {
+            return ResponseDto.fail("Token이 유효하지 않습니다.");
+        }
         if (post == null) {
             return ResponseDto.fail("해당 게시글을 찾을 수 없습니다.");
         } else {

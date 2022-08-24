@@ -21,8 +21,8 @@ public class CommentController {
         return commentService.createComment(postId,requestDto, request);
     }
     @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.GET)
-        public ResponseDto<?> getAllComments(@PathVariable Long id, Member member){
-            return commentService.getAllCommentsByPost(id, member);
+        public ResponseDto<?> getAllComments(@PathVariable Long id, HttpServletRequest request){
+            return commentService.getAllCommentsByPost(id, request);
     }
 
     @RequestMapping(value = "/api/comment/{commentId}/{postId}", method = RequestMethod.PUT)
