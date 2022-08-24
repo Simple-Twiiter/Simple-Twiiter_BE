@@ -29,6 +29,8 @@ public class Member extends Timestamped {
 
     private String userImg;
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
