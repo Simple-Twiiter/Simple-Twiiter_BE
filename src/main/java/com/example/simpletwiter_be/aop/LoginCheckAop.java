@@ -18,14 +18,13 @@ public class LoginCheckAop {
 
     private final TokenProvider tokenProvider;
 
-    @Before("@annotation(com.one.mycodi.annotation.LoginCheck)")
+    @Before("@annotation(com.example.simpletwiter_be.annotation.LoginCheck)")
     public ResponseDto<?> loginCheck(){
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
 
         String message = "";
-        String code = "";
         if (null == request.getHeader("RefreshToken")) {
             message = "MEMBER_NOT_FOUND";
 
