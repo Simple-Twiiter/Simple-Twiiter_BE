@@ -33,7 +33,7 @@ public class PostController {
                 throw new RuntimeException(e);
             }
         };
-        return userGetterFromToken.applyPostService(request, fn);
+        return userGetterFromToken.applyPostService(request, fn,true);
     }
 
     @GetMapping
@@ -47,7 +47,7 @@ public class PostController {
                 throw new RuntimeException(e);
             }
         };
-        return userGetterFromToken.applyPostService(request, fn);
+        return userGetterFromToken.applyPostService(request, fn,false);
     }
 
     @GetMapping("/{postId}")
@@ -60,7 +60,7 @@ public class PostController {
                 throw new RuntimeException(e);
             }
         };
-        return userGetterFromToken.applyPostService(request, fn);
+        return userGetterFromToken.applyPostService(request, fn, false);
     }
 
     @DeleteMapping("/{postId}")
@@ -73,7 +73,7 @@ public class PostController {
                 throw new RuntimeException(e);
             }
         };
-        return userGetterFromToken.applyPostService(request, fn);
+        return userGetterFromToken.applyPostService(request, fn, true);
     }
 
     @PutMapping("/{postId}")
@@ -88,6 +88,6 @@ public class PostController {
                 throw new RuntimeException(e);
             }
         };
-        return userGetterFromToken.applyPostService(request, fn);
+        return userGetterFromToken.applyPostService(request, fn,true);
     }
 }
