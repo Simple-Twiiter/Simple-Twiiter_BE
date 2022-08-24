@@ -144,8 +144,11 @@ public class PostService {
         } else if (!post.getMember().equals(member)) {
             return ResponseDto.fail("자신이 작성한 게시글만 수정할 수 있습니다.");
         }else {
-            String imgUrl = null;
-            if (!multipartFile.isEmpty()){
+            String imgUrl=null;
+            if (post.getImgUrl()!=null){
+                imgUrl = post.getImgUrl();
+            }
+            if (multipartFile!=null){
                 imgUrl = imageUploadService.uploadImage(multipartFile);
             }
             post.update(postRequestDto.getTitle(), postRequestDto.getContents(), imgUrl);
