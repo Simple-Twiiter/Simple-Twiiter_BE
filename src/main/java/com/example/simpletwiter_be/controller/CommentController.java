@@ -25,10 +25,10 @@ public class CommentController {
             return commentService.getAllCommentsByPost(id, member);
     }
 
-    @RequestMapping(value = "/api/comment/{commentId}", method = RequestMethod.PUT)
-    public ResponseDto<?> updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto requestDto,
+    @RequestMapping(value = "/api/comment/{commentId}/{postId}", method = RequestMethod.PUT)
+    public ResponseDto<?> updateComment(@PathVariable Long commentId,@PathVariable Long postId,@RequestBody CommentRequestDto requestDto,
                                         HttpServletRequest request) {
-        return commentService.updateComment(requestDto.getPostId(), commentId,requestDto, request);
+        return commentService.updateComment(postId, commentId,requestDto, request);
     }
 
     @RequestMapping(value = "/api/comment/{commentId}", method = RequestMethod.DELETE)

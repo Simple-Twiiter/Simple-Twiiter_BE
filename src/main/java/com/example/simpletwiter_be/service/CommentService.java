@@ -73,8 +73,13 @@ public class CommentService {
         );
     }
 
+<<<<<<< HEAD
     @Transactional
     public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
+=======
+
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId,Member member) {
+>>>>>>> origin/developers
         Post post = postRepository.findById(postId).orElse(null);
 
         if (post == null) {
@@ -87,7 +92,6 @@ public class CommentService {
             for (Comment comment : commentList) {
 
                 UserDto userDto = new UserDto(comment.getMember().getUsername(), comment.getMember().getUserImg(), false);
-
 
                 CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                         .id(comment.getId())
