@@ -7,6 +7,7 @@ import com.example.simpletwiter_be.domain.PostHeart;
 import com.example.simpletwiter_be.dto.response.ResponseDto;
 import com.example.simpletwiter_be.jwt.TokenProvider;
 import com.example.simpletwiter_be.repository.PostHeartRepository;
+import com.example.simpletwiter_be.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +21,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostHeartService {
 
+    private final PostRepository postRepository;
     private final TokenProvider tokenProvider;
     private final PostService postService;
     private final PostHeartRepository postHeartRepository;
 
 
     @Transactional
-    public ResponseDto<?> createPostHeart(Long id, HttpServletRequest request) {
+    public ResponseDto<?> createPostHeart(Long postId, HttpServletRequest request) {
 
         if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("로그인이 필요합니다.");
@@ -42,7 +44,7 @@ public class PostHeartService {
             return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
 
-        Post post = postService.isPresentPost(id);
+        Post post = postRepository.findByIdAndActivateIsTrue(postId).orElse(null);
 
         if (null == post) {
             return ResponseDto.fail("존재하지 않는 게시글 id 입니다.");
@@ -70,7 +72,7 @@ public class PostHeartService {
     }
 
     @Transactional
-    public ResponseDto<?> deletePostHeart(Long id, HttpServletRequest request) {
+    public ResponseDto<?> deletePostHeart(Long postId, HttpServletRequest request) {
 
         if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("로그인이 필요합니다.");
@@ -86,7 +88,7 @@ public class PostHeartService {
             return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
 
-        Post post = postService.isPresentPost(id);
+        Post post = postRepository.findByIdAndActivateIsTrue(postId).orElse(null);
 
         if (null == post) {
             return ResponseDto.fail("존재하지 않는 게시글 id 입니다.");
