@@ -24,6 +24,7 @@ public class PostHeartService {
     private final PostService postService;
     private final PostHeartRepository postHeartRepository;
 
+
     @Transactional
     public ResponseDto<?> createPostHeart(Long id, HttpServletRequest request) {
 
@@ -101,6 +102,7 @@ public class PostHeartService {
         post.update(postHearts);
         return ResponseDto.success("좋아요 취소");
     }
+
     @Transactional
     public Member validateMember(HttpServletRequest request) {
         if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
