@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Builder
@@ -147,6 +148,11 @@ public class PostService {
                     .userDto(userDto)
                     .build());
         }
+    }
+    @Transactional(readOnly = true)
+    public Post isPresentPost(Long id) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        return optionalPost.orElse(null);
     }
 
 }
