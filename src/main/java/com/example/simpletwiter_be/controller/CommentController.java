@@ -21,10 +21,8 @@ public class CommentController {
         return commentService.createComment(requestDto.getPostId(), requestDto, request);
     }
     @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.GET)
-        public ResponseDto<?> getAllComments(@RequestParam(value = "pageSize", defaultValue = "50", required = false) int pageSize,
-                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                             @RequestBody CommentRequestDto requestDto, Member member){
-            return commentService.getAllCommentsByPost(requestDto.getPostId(), member,pageSize, page);
+        public ResponseDto<?> getAllComments(@PathVariable Long id, Member member){
+            return commentService.getAllCommentsByPost(id, member);
     }
 
     @RequestMapping(value = "/api/comment/{commentId}", method = RequestMethod.PUT)

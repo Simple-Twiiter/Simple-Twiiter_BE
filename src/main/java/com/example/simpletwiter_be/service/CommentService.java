@@ -51,7 +51,7 @@ public class CommentService {
         if (post == null){
             return ResponseDto.fail("해당 게시글을 찾을 수 없습니다.");
         }
-
+        UserDto userDto = new UserDto(member.getUsername(), member.getUserImg(),false);
         Comment comment = Comment.builder()
                 .member(member)
                 .post(post)
@@ -63,7 +63,7 @@ public class CommentService {
         return ResponseDto.success(
                 CommentResponseDto.builder()
                         .id(comment.getId())
-
+                        .member(userDto)
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
@@ -73,37 +73,37 @@ public class CommentService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public ResponseDto<?> getAllCommentsByPost(Long postId, Member member, int page, int pageSize) {
+
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
         Post post = postRepository.findById(postId).orElse(null);
-        PageRequest pageRequest = PageRequest.of(page,pageSize);
-        if (post == null){
+
+        if (post == null) {
             return ResponseDto.fail("해당 게시글을 찾을 수 없습니다.");
+        } else {
+            PageRequest pageRequest = PageRequest.of(0, 50);
+            List<Comment> commentList = commentRepository.findAllByPost(post, pageRequest);
+            List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+            for (Comment comment : commentList) {
+
+                UserDto userDto = new UserDto(comment.getMember().getUsername(), comment.getMember().getUserImg(), false);
+
+
+                CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                        .id(comment.getId())
+                        .content(comment.getContent())
+                        .member(userDto)
+                        .createdAt(comment.getCreatedAt())
+                        .modifiedAt(comment.getModifiedAt())
+                        .isMine(post.getMember().equals(member))
+                        .build();
+                commentResponseDtoList.add(commentResponseDto);
+
+            }
+
+            return ResponseDto.success(commentResponseDtoList);
         }
-
-        List<Comment> commentList = commentRepository.findAllByPost(post,pageRequest);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-
-        for (Comment comment : commentList) {
-
-            UserDto userDto = new UserDto(member.getUsername(), member.getUserImg(), false);
-
-
-            commentResponseDtoList.add(
-                    CommentResponseDto.builder()
-                            .id(comment.getId())
-                            .content(comment.getContent())
-                            .member(userDto)
-                            .createdAt(comment.getCreatedAt())
-                            .modifiedAt(comment.getModifiedAt())
-                            .isMine(post.getMember().equals(member))
-                            .build()
-            );
-        }
-
-        return ResponseDto.success(commentResponseDtoList);
     }
-
     @Transactional
     public ResponseDto<?> updateComment(Long postId , Long id, CommentRequestDto requestDto, HttpServletRequest request) {
         if (null == request.getHeader("RefreshToken")) {
