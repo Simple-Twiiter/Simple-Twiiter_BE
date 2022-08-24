@@ -17,14 +17,14 @@ public class UserGetterFromToken {
     private final TokenProvider tokenProvider;
 
     public ResponseDto<?> applyPostService(HttpServletRequest request, Function<Member,ResponseDto<?>> fn){
-        if (null == request.getHeader("Refresh-Token")) {
+        if (null == request.getHeader("RefreshToken")) {
 //            return new Result(null, "로그인이 필요합니다.");
-            return ResponseDto.fail("로그인이 필요합니다.");
+            return ResponseDto.fail("123로그인이 필요합니다.");
         }
 
         if (null == request.getHeader("Authorization")) {
 //            return new Result(null, "로그인이 필요합니다.");
-            return ResponseDto.fail("로그인이 필요합니다.");
+            return ResponseDto.fail("456로그인이 필요합니다.");
         }
 
         Member member = validateMember(request);
@@ -37,7 +37,7 @@ public class UserGetterFromToken {
     }
 
     private Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
             return null;
         }
         return tokenProvider.getMemberFromAuthentication();

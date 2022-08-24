@@ -12,6 +12,7 @@ import com.example.simpletwiter_be.repository.CommentRepository;
 import com.example.simpletwiter_be.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +29,12 @@ public class CommentService {
 
     private final TokenProvider tokenProvider;
 
-    private final PostService postService;
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+
 
     @Transactional
     public ResponseDto<?> createComment(Long postId, CommentRequestDto requestDto, HttpServletRequest request) {
-        if (null == request.getHeader("Refresh-Token")) {
+        if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
@@ -105,7 +106,7 @@ public class CommentService {
 
     @Transactional
     public ResponseDto<?> updateComment(Long postId , Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-        if (null == request.getHeader("Refresh-Token")) {
+        if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
@@ -149,7 +150,7 @@ public class CommentService {
 
     @Transactional
     public ResponseDto<?> deleteComment(Long id, HttpServletRequest request) {
-        if (null == request.getHeader("Refresh-Token")) {
+        if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("로그인이 필요합니다.");
         }
 
@@ -183,7 +184,7 @@ public class CommentService {
 
     @Transactional
     public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
             return null;
         }
         return tokenProvider.getMemberFromAuthentication();
