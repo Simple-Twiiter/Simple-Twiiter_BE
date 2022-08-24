@@ -74,7 +74,7 @@ public class CommentService {
     }
 
 
-    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId, Member member) {
+    public ResponseDto<List<CommentResponseDto>> getAllCommentsByPost(Long postId,Member member) {
         Post post = postRepository.findById(postId).orElse(null);
 
         if (post == null) {
@@ -88,14 +88,13 @@ public class CommentService {
 
                 UserDto userDto = new UserDto(comment.getMember().getUsername(), comment.getMember().getUserImg(), false);
 
-
                 CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                         .id(comment.getId())
                         .content(comment.getContent())
                         .member(userDto)
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
-                        .isMine(post.getMember().equals(member))
+                        .isMine(comment.getMember().equals(member))
                         .build();
                 commentResponseDtoList.add(commentResponseDto);
 
