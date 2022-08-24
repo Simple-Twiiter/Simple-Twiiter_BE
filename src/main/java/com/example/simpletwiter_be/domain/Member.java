@@ -1,11 +1,11 @@
 package com.example.simpletwiter_be.domain;
 
-import com.example.simpletwiter_be.domain.Timestamped;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.Objects;
 
@@ -14,7 +14,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class Member extends Timestamped {
 
     @Id
@@ -50,6 +49,5 @@ public class Member extends Timestamped {
     public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
-
 
 }

@@ -15,7 +15,7 @@ public class MemberRequestDto {
 
     @NotBlank
     @Size(min = 4, max = 12)
-    @Pattern(regexp = "[a-zA-Z\\d]*${3,12}")
+    @Pattern(regexp = "^[a-zA-Z0-9]*${3,12}")
     private String username;
 
     @NotBlank
@@ -25,5 +25,7 @@ public class MemberRequestDto {
 
     @NotBlank
     private String passwordConfirm;
+
+
 }
 

@@ -20,7 +20,7 @@ class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private UsersRepository memberRepository;
+    private MemberRepository memberRepository;
 
     static private Member member1;
     static private Member member2;

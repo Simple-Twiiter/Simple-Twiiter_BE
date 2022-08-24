@@ -11,6 +11,7 @@ import com.example.simpletwiter_be.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,16 +22,20 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final ImageUploadService imageUploadService;
 
 
-    MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider){
+
+    MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, TokenProvider tokenProvider, ImageUploadService imageUploadService){
         this.memberRepository = memberRepository;
         this. passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.imageUploadService = imageUploadService;
     }
 
     @Transactional
-    public ResponseDto<?> createMember(MemberRequestDto requestDto) {
+    public ResponseDto<?> createMember(MemberRequestDto requestDto, MultipartFile multipartFile) throws Exception {
+        String userImg = null;
         if (null != isPresentMember(requestDto.getUsername())) {
             return ResponseDto.fail("중복된 닉네임 입니다.");
         }
@@ -38,16 +43,21 @@ public class MemberService {
         if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
             return ResponseDto.fail("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
-
+        if (!multipartFile.isEmpty()){
+            userImg = imageUploadService.uploadImage(multipartFile);
+        }
+        
         Member member = Member.builder()
                 .username(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
+                .userImg(userImg)
                 .build();
         memberRepository.save(member);
         return ResponseDto.success(
                 MemberResponseDto.builder()
                         .id(member.getId())
                         .username(member.getUsername())
+                        .userImg(member.getUserImg())
                         .createdAt(member.getCreatedAt())
                         .modifiedAt(member.getModifiedAt())
                         .build()

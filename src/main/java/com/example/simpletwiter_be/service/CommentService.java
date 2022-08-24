@@ -88,6 +88,7 @@ public class CommentService {
             UserDto userDto = new UserDto(member.getUsername(), member.getUserImg(),false);
 
 
+
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
                             .id(comment.getId())
