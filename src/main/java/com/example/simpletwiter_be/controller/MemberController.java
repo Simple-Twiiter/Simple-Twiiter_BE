@@ -21,7 +21,7 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/api/user/signup", method = RequestMethod.POST)
-    public ResponseDto<?> signup(@RequestPart(value = "user") @Valid MemberRequestDto requestDto, @RequestPart("imgFile") MultipartFile multipartFile
+    public ResponseDto<?> signup(@RequestPart(value = "user") @Valid MemberRequestDto requestDto, @RequestPart(value = "imgFile") MultipartFile multipartFile
                                  ) throws Exception {
         return memberService.createMember(requestDto,multipartFile);
     }

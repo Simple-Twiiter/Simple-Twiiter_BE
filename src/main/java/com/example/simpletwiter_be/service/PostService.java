@@ -60,7 +60,7 @@ public class PostService {
                         .modifiedAt(returnPost.getModifiedAt().toLocalDate())
                         .isMine(true)
                         .isLike(false)
-                        .userDto(userDto)
+                        .member(userDto)
                 .build());
     }
 
@@ -86,7 +86,7 @@ public class PostService {
                     .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
-                    .userDto(userDto)
+                    .member(userDto)
                     .build();
             postResponseDtoList.add(postResponseDto);
         }
@@ -115,7 +115,7 @@ public class PostService {
                     .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
-                    .userDto(userDto)
+                    .member(userDto)
                     .build());
         }
     }
@@ -162,7 +162,7 @@ public class PostService {
                     .modifiedAt(post.getModifiedAt().toLocalDate())
                     .isMine(post.getMember().equals(member))
                     .isLike(isLike)
-                    .userDto(userDto)
+                    .member(userDto)
                     .build());
         }
     }
