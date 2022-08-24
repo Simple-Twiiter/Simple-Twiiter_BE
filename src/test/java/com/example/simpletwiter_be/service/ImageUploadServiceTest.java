@@ -27,7 +27,7 @@ class ImageUploadServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("image",
                 "test.jpg",
                 "image/jpeg",
-                new FileInputStream("/resources/testImg.jpg"));
+                new FileInputStream("src/test/resources/testImg.jpg"));
 
         String imgUrl = imageUploadService.uploadImage(multipartFile);
         assertNotNull(imgUrl);
