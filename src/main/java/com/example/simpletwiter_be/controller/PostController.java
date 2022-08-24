@@ -24,14 +24,8 @@ public class PostController {
     private final UserGetterFromToken userGetterFromToken;
 
     @PostMapping
-    public ResponseDto<?> postPost(HttpServletRequest request,
-                                   @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("title") String title,
-                                   @RequestPart("contents") String contents) {
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .contents(contents)
-                .title(title)
-                .build();
+    public ResponseDto<?> postPost(HttpServletRequest request, @ModelAttribute PostRequestDto postRequestDto){
+        MultipartFile multipartFile = postRequestDto.getImgFile();
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.postPost(member, postRequestDto, multipartFile);
@@ -85,14 +79,8 @@ public class PostController {
     @PutMapping("/{postId}")
     public  ResponseDto<?> putPost(HttpServletRequest request,
                                    @PathVariable("postId") Long postId,
-                                   @RequestPart("imgFile") MultipartFile multipartFile,
-                                   @RequestPart("title") String title,
-                                   @RequestPart("contents") String contents)  throws Exception {
-        PostRequestDto postRequestDto = PostRequestDto.builder()
-                .title(title)
-                .contents(contents)
-                .build();
-
+                                   @ModelAttribute PostRequestDto postRequestDto) throws Exception{
+        MultipartFile multipartFile = postRequestDto.getImgFile();
         Function<Member, ResponseDto<?>> fn = (Member member) -> {
             try {
                 return postService.putPost(member, postId, postRequestDto, multipartFile);
