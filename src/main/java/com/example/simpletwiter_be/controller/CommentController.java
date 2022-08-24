@@ -17,20 +17,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @RequestMapping(value = "/api/comment", method = RequestMethod.POST)
-    public ResponseDto<?> createComment(@RequestBody Long postId,CommentRequestDto requestDto, HttpServletRequest request) {
-        return commentService.createComment(postId,requestDto, request);
+    public ResponseDto<?> createComment(@RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+        return commentService.createComment(requestDto.getPostId(), requestDto, request);
     }
     @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.GET)
         public ResponseDto<?> getAllComments(@RequestParam(value = "pageSize", defaultValue = "50", required = false) int pageSize,
                                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                             @PathVariable Long id, Member member){
-            return commentService.getAllCommentsByPost(id, member,pageSize, page);
+                                             @RequestBody CommentRequestDto requestDto, Member member){
+            return commentService.getAllCommentsByPost(requestDto.getPostId(), member,pageSize, page);
     }
 
     @RequestMapping(value = "/api/comment/{commentId}", method = RequestMethod.PUT)
-    public ResponseDto<?> updateComment(@PathVariable Long commentId,Long postId, @RequestBody CommentRequestDto requestDto,
+    public ResponseDto<?> updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto requestDto,
                                         HttpServletRequest request) {
-        return commentService.updateComment(postId,commentId,requestDto, request);
+        return commentService.updateComment(requestDto.getPostId(), commentId,requestDto, request);
     }
 
     @RequestMapping(value = "/api/comment/{commentId}", method = RequestMethod.DELETE)
