@@ -17,25 +17,20 @@ public class UserGetterFromToken {
     private final TokenProvider tokenProvider;
 
     public ResponseDto<?> applyPostService(HttpServletRequest request, Function<Member,ResponseDto<?>> fn, boolean requestAuth){
+        if (!requestAuth) {
+            return fn.apply(null);
+        }
         if (null == request.getHeader("RefreshToken")) {
             return ResponseDto.fail("123로그인이 필요합니다.");
-        } else if (!requestAuth) {
-            return fn.apply(null);
         }
 
         if (null == request.getHeader("Authorization")) {
             return ResponseDto.fail("456로그인이 필요합니다.");
-        } else if (!requestAuth) {
-            return fn.apply(null);
         }
 
         Member member = validateMember(request);
         if (null == member) {
-            if (!requestAuth){
-                return fn.apply(member);
-            }else{
-                return ResponseDto.fail("Token이 유효하지 않습니다.");
-            }
+            return ResponseDto.fail("Token이 유효하지 않습니다.");
         }
         return fn.apply(member);
 

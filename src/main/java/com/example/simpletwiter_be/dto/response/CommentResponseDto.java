@@ -19,7 +19,7 @@ public class CommentResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private boolean isMine;
+    private Boolean isMine;
 
 
 }
